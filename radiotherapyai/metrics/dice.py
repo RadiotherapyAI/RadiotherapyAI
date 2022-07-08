@@ -12,24 +12,22 @@
 # implied. See the License for the specific language governing
 # permissions and limitations under the License.
 
-"""Building the documentation"""
+"""Determining the Dice metric"""
 
-import os
-import pathlib
-import subprocess
-
-HERE = pathlib.Path(__file__)
-REPO_ROOT = HERE.parents[1]
-DOCS_DIR = REPO_ROOT / "docs"
-SRC_DIR = REPO_ROOT / "src"
-TABLE_OF_CONTENTS_PATH = DOCS_DIR / "_toc.yml"
+import shapely.geometry.base
 
 
-def build():
-    """Build the Jupyter Book documentation"""
+def from_shapely(
+    a: shapely.geometry.base.BaseGeometry, b: shapely.geometry.base.BaseGeometry
+) -> float:
+    """Determine the Dice metric from two shapely geometries.
 
-    env = os.environ.copy()
+    Explanation of the Dice is available at:
+    <https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient>
 
-    subprocess.check_call(
-        ["jupyter-book", "build", str(DOCS_DIR)], cwd=REPO_ROOT, env=env
-    )
+    Args:
+        a (shapely.geometry.base.BaseGeometry)
+        b (shapely.geometry.base.BaseGeometry)
+    """
+
+    return 2 * a.intersection(b).area / (a.area + b.area)

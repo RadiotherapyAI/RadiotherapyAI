@@ -12,10 +12,16 @@
 # implied. See the License for the specific language governing
 # permissions and limitations under the License.
 
+"""CLI entrance
+
+Currently only utilised to build the docs
+"""
+
+from . import _build
+
 
 def app():
-    from . import _build
-
+    """The function called by the CLI commands `rtai` and `radiotherapyai`"""
     _build.build()
 
 
